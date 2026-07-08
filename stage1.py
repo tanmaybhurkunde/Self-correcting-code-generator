@@ -1,6 +1,6 @@
 # stage1.py
 import re
-from groq import Groq
+from groq import Groq  
 
 # 1. Create the client
 
