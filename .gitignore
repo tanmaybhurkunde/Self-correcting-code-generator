@@ -1,3 +1,5 @@
-/.env
-
-GROK_API_KEY="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"
+venv/
+__pycache__/
+*.pyc
+.env
+*.log
