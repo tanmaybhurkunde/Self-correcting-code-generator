@@ -1,11 +1,6 @@
 import re
-import subprocess
-import sys
-from pathlib import Path
-from groq import Groq
 from llm_utils import extract_code , ask_model_with_history, execute_code
 
-client = Groq()
 
 def output_matches(expected, actual):
     """Check if actual output matches expected value (robustly)."""
