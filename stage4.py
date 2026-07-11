@@ -1,6 +1,6 @@
 import re
-from llm_utils import extract_code , ask_model_with_history, execute_code
-
+from llm_utils import extract_code, ask_model_with_history, execute_code
+from arg_parse import parse_args
 
 def output_matches(expected, actual):
     """Check if actual output matches expected value (robustly)."""
@@ -124,37 +124,42 @@ def run_loop(task, expected_output=None, max_iterations=5):
     }
 
 if __name__ == "__main__":
-    print("TEST 1: Median")
-    print("="*60)
+    # Parse command line arguments
+    args = parse_args()
     
+    print("\n" + "="*60)
+    print("🤖 SELF-CORRECTING CODE AGENT")
+    print("="*60)
+    print(f"Task: {args.task}")
+    if args.expected:
+        print(f"Expected output: {args.expected}")
+    print(f"Max iterations: {args.max_iterations}")
+    print("="*60 + "\n")
+    
+    # Run the agent with the provided arguments
     result = run_loop(
-        "Write a Python function that takes a list of numbers and returns the median. Print the median for [1, 3, 2, 4, 5]",
-        expected_output="3",
-        max_iterations=3
+        args.task,
+        expected_output=args.expected,
+        max_iterations=args.max_iterations
     )
     
+    # Display results
     if result["success"]:
         print("\n" + "="*60)
-        print("✅ SUCCESS!")
+        print("✅ SUCCESS! Generated working code:")
         print("="*60)
         print(result["code"])
-        print("\nOutput:")
-        print(result["output"])
-    
-    print("\n" + "\n" + "="*60)
-    print("TEST 2: Second Largest")
-    print("="*60)
-    
-    result2 = run_loop(
-        "Write a function that returns the second largest number in a list. Print the result for [3, 1, 4, 1, 5, 9, 2, 6, 5]",
-        expected_output="6",
-        max_iterations=3
-    )
-    
-    if result2["success"]:
         print("\n" + "="*60)
-        print("✅ SUCCESS!")
+        print("Output:")
         print("="*60)
-        print(result2["code"])
-        print("\nOutput:")
-        print(result2["output"])
+        print(result["output"])
+        print(f"\n✨ Completed in {result['attempts']} attempt(s)")
+    else:
+        print("\n" + "="*60)
+        print("❌ FAILED to generate working code")
+        print("="*60)
+        print(f"Attempts: {result['attempts']}")
+        if result.get('last_error'):
+            print(f"Last error: {result['last_error']}")
+        if result.get('last_code'):
+            print(f"\nLast code attempt:\n{result['last_code']}")
