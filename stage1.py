@@ -1,6 +1,7 @@
 # stage1.py
 import re
 from groq import Groq  
+# from llm_utils import extract_code
 
 # 1. Create the client
 
@@ -30,6 +31,8 @@ print("---")
 text = completion.choices[0].message.content
 print(text)
 
+# available in llm_utils.py
+
 def extract_code(text) :
     #  Pattern: triple backticks, optional "python", newline, capture everything, triple backticks
     pattern = r"```(?:python)?\n(.*?)```"
@@ -40,6 +43,7 @@ def extract_code(text) :
         return match.group(1).strip()  # Return just the captured code
     return ""  
     
+
 text = completion.choices[0].message.content
 code = extract_code(text)
 print("EXTRACTED CODE:")
