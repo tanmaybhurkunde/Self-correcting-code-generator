@@ -32,6 +32,7 @@ text = completion.choices[0].message.content
 print(text)
 
 # available in llm_utils.py
+# def extract_code(text):
 
 
 text = completion.choices[0].message.content
