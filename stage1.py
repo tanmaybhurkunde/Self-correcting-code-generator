@@ -3,7 +3,7 @@ import re
 from groq import Groq  
 from llm_utils import extract_code
 
-# 1. Create the client
+# 1. Create an instance of the Groq client
 
 client = Groq()
 
